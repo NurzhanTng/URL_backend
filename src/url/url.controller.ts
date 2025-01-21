@@ -35,13 +35,23 @@ export class UrlController {
     return res.redirect(url.originalUrl);
   }
 
-  @Get('info/:shortUrl')
-  async getInfo(@Param('shortUrl') shortUrl: string) {
-    const url = await this.urlService.getUrl(shortUrl);
-
+  @Get('/alias/:alias')
+  async redirectByAlias(@Param('alias') alias: string, @Res() res: Response) {
+    const url = await this.urlService.getUrlByAlias(alias);
     if (!url) {
       throw new NotFoundException('URL not found');
     }
+    await this.urlService.incrementClickCount(url);
+    return res.redirect(url.originalUrl);
+  }
+
+  @Get('info/:shortUrl')
+  async getInfo(@Param('shortUrl') shortUrl: string) {
+    const url = await this.urlService.getUrl(shortUrl);
+    if (!url) {
+      throw new NotFoundException('URL not found');
+    }
+    return url;
   }
 
   @Delete('delete/:shortUrl')

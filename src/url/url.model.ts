@@ -3,6 +3,8 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 interface UrlCreationAttrs {
   shortUrl: string;
   originalUrl: string;
+  alias?: string;
+  expiresAt?: Date;
 }
 
 @Table({ tableName: 'urls' })
