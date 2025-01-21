@@ -1,12 +1,12 @@
 import {
   BadRequestException,
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   NotFoundException,
   Param,
   Post,
-  Res
+  Res,
 } from '@nestjs/common';
 import { UrlService } from './url.service';
 import { ShortenUrlDto } from './dto/shorten-url.dto';
@@ -21,16 +21,21 @@ export class UrlController {
     if (!shortenUrlDto.originalUrl) {
       throw new BadRequestException('originalUrl is required');
     }
-
     return await this.urlService.createShortUrl(shortenUrlDto);
   }
 
   @Get(':shortUrl')
   async redirect(@Param('shortUrl') shortUrl: string, @Res() res: Response) {
-    const originalUrl = await this.urlService.getOriginalUrl(shortUrl);
-    if (!originalUrl) {
+    const url = await this.urlService.getUrl(shortUrl);
+    if (!url) {
       throw new NotFoundException('URL not found');
     }
-    return res.redirect(originalUrl);
+    await this.urlService.incrementClickCount(url);
+    return res.redirect(url.originalUrl);
+  }
+
+  @Get('info/:shortUrl')
+  async getInfo(@Param('shortUrl') shortUrl: string) {
+    return this.urlService.getUrl(shortUrl);
   }
 }

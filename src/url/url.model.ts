@@ -1,8 +1,8 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 interface UrlCreationAttrs {
-  originalUrl: string;
   shortUrl: string;
+  originalUrl: string;
 }
 
 @Table({ tableName: 'urls' })
@@ -12,14 +12,13 @@ export class Url extends Model<Url, UrlCreationAttrs> {
     unique: true,
     primaryKey: true,
   })
-  originalUrl: string;
+  shortUrl: string;
 
   @Column({
     type: DataType.STRING,
-    unique: true,
     allowNull: false,
   })
-  shortUrl: string;
+  originalUrl: string;
 
   @Column({
     type: DataType.STRING,

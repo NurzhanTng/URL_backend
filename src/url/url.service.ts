@@ -27,12 +27,15 @@ export class UrlService {
     return shortUrl;
   }
 
-  async getOriginalUrl(shortUrl: string) {
-    const url = await this.urlRepository.findOne({
+  async getUrl(shortUrl: string) {
+    return this.urlRepository.findOne({
       where: { shortUrl },
       rejectOnEmpty: undefined,
     });
-    return url?.originalUrl;
+  }
+
+  async incrementClickCount(url: Url) {
+    await url.increment('clickCount');
   }
 
   private generateMd5Hash(input: string): string {
