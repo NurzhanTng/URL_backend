@@ -1,7 +1,8 @@
 import {
   BadRequestException,
   Body,
-  Controller, Delete,
+  Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -36,6 +37,18 @@ export class UrlController {
 
   @Get('info/:shortUrl')
   async getInfo(@Param('shortUrl') shortUrl: string) {
-    return this.urlService.getUrl(shortUrl);
+    const url = await this.urlService.getUrl(shortUrl);
+
+    if (!url) {
+      throw new NotFoundException('URL not found');
+    }
+  }
+
+  @Delete('delete/:shortUrl')
+  async delete(@Param('shortUrl') shortUrl: string) {
+    const result = await this.urlService.deleteUrl(shortUrl);
+    if (!result) {
+      throw new NotFoundException('URL not found');
+    }
   }
 }

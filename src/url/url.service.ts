@@ -23,8 +23,8 @@ export class UrlService {
       isUnique = !existingUrl;
     }
 
-    await this.urlRepository.create({ originalUrl, shortUrl });
-    return shortUrl;
+    const url = await this.urlRepository.create({ originalUrl, shortUrl });
+    return { shortUrl: url.shortUrl, alias: url.alias };
   }
 
   async getUrl(shortUrl: string) {
@@ -32,6 +32,14 @@ export class UrlService {
       where: { shortUrl },
       rejectOnEmpty: undefined,
     });
+  }
+
+  async deleteUrl(shortUrl: string) {
+    const url = await this.getUrl(shortUrl);
+    if (!url) return false;
+
+    await this.urlRepository.destroy({ where: { shortUrl } });
+    return true;
   }
 
   async incrementClickCount(url: Url) {
