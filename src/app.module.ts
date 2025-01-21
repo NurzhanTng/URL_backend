@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { Url } from './url/url.model';
 import * as process from 'process';
+import { UrlLog } from './url/url-logs.model';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import * as process from 'process';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Url],
+      models: [Url, UrlLog],
       autoLoadModels: true,
     }),
     UrlModule,
