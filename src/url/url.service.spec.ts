@@ -9,7 +9,7 @@ describe('UrlService', () => {
       providers: [UrlService],
     }).compile();
 
-    service = module.get<UrlService>(UrlService);
+    service = module.get(UrlService);
   });
 
   it('should be defined', () => {

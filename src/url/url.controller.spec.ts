@@ -9,7 +9,7 @@ describe('UrlController', () => {
       controllers: [UrlController],
     }).compile();
 
-    controller = module.get<UrlController>(UrlController);
+    controller = module.get(UrlController);
   });
 
   it('should be defined', () => {
